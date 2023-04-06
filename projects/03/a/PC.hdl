@@ -17,4 +17,12 @@ CHIP PC {
 
     PARTS:
     // Put your code here:
+    Inc16(in=nextIn, out=increasedIn);
+
+    Mux16(a=nextIn, b=increasedIn, sel=inc, out=increasedOut);
+    Mux16(a=increasedOut, b=in, sel=load, out=loadedOut);
+    Mux16(a=loadedOut, b=false, sel=reset, out=resetOut);
+
+    // Control flow is handled with the Mux16s, so we always load the resulting value
+    Register(in=resetOut, load=true, out=out, out=nextIn);
 }
